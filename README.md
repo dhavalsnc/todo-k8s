@@ -4,7 +4,7 @@
 
 | Resource | URL |
 |---|---|
-| Code Repository | _Add your GitHub/GitLab repo URL here_ |
+| Code Repository | https://github.com/dhavalsnc/todo-k8s |
 | Docker Hub Image | https://hub.docker.com/r/dclearning/todo-api |
 | Live API (May not work) | `http://20.204.212.246/todoitems` | 
 
@@ -52,7 +52,6 @@ All inter-tier communication uses **Kubernetes Service DNS names**, never Pod IP
 | MSSQL ConfigMap | `k8s/manifests/config-maps/todo-mssql.configmap.yaml` |
 | API Secret (DB password) | `k8s/manifests/secrets/todo-api.secret.yaml` |
 | MSSQL Secret (SA password) | `k8s/manifests/secrets/todo-mssql.secret.yaml` |
-| Azure Storage Secret | `k8s/manifests/secrets/azure.secret.yaml` |
 | StorageClass (Azure File) | `k8s/manifests/storage-class/azurefile.sc.yaml` |
 | PersistentVolume | `k8s/manifests/persistent-volumes/todo-mssql.pv.yaml` |
 | PersistentVolumeClaim | `k8s/manifests/persistent-volume-claims/todo-mssql.pvc.yaml` |
