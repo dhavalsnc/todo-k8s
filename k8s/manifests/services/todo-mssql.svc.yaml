@@ -1,0 +1,14 @@
+# create a service for the todo-mssql deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-mssql-svc
+  namespace: todo
+spec:
+  selector:
+    app: todo-mssql
+  ports:
+  - protocol: TCP
+    port: 1433
+    targetPort: 1433
+  type: ClusterIP

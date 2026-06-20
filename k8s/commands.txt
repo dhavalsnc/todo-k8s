@@ -1,0 +1,11 @@
+docker build . -t dclearning/todo-api:1.0.0
+
+docker push dclearning/todo-api:1.0.0
+
+az aks enable-addons --resource-group NAGP --name todo --addons ingress-appgw --appgw-name todo-appgw-v2 --appgw-subnet-id "/subscriptions/b8b99719-04aa-4efb-96d4-f6c738351b1f/resourceGroups/MC_NAGP_todo_centralindia/providers/Microsoft.Network/virtualNetworks/aks-vnet-34220479/subnets/appgw-overlay-subnet"
+
+kubectl port-forward svc/todo-api-svc 9090:80 -n todo
+
+az aks update --resource-group NAGP --name todo --enable-app-routing
+
+/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "todo@123" -C

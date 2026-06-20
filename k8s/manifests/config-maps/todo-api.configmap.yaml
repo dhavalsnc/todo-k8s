@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: todo-api-config
+  namespace: todo
+data:
+  DB_CONNECTION_STRING: "Server=todo-mssql-svc;Database=todo;User Id=sa;TrustServerCertificate=True;Pooling=true; Max Pool Size=10;Min Pool Size=5;Connection Timeout=30;"

@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: file.csi.azure.com
+  name: todo-mssql-pv
+  namespace: todo
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: azurefile-storage-class
+  csi:
+    driver: file.csi.azure.com
+    volumeHandle: todo-mssql-volume # Can be any unique string to identify the volume
+    volumeAttributes:
+      resourceGroup: NAGP
+      shareName: todo-mssql-file-share
+    nodeStageSecretRef:
+      name: azure-secret      # Must match the secret created in Step 3
+      namespace: todo

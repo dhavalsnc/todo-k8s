@@ -1,0 +1,46 @@
+# deployment for todo-mssql with storage that retains data across pod restarts
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-mssql
+  namespace: todo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-mssql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: todo-mssql
+    spec:
+      containers:
+      - name: todo-mssql
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+        - containerPort: 1433
+        securityContext:
+          runAsUser: 10001
+          runAsGroup: 0
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "2Gi"
+          limits:
+            cpu: "1000m"
+            memory: "3Gi"
+        envFrom:
+        - configMapRef:
+            name: todo-mssql-config
+        - secretRef:
+            name: todo-mssql-secret
+        volumeMounts:
+        - name: todo-mssql-data
+          mountPath: /var/opt/mssql
+      volumes:
+      - name: todo-mssql-data
+        persistentVolumeClaim:
+          claimName: todo-mssql-pvc
+        

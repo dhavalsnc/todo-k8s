@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: todo-mssql-pvc
+  namespace: todo
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: azurefile-storage-class # Must match the StorageClass name
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: todo-mssql-pv   # Explicitly binds to the manual PV above
+  

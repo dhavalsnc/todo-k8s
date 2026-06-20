@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Microsoft SQL Server Database Container
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: todo-mssql
+    hostname: todo-mssql
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=todo@123
+      - MSSQL_PID=Developer
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - todo-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-C", "-S", "localhost", "-U", "sa", "-P", "todo@123", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  todo-api:
+    build:
+      context: ./todo-api
+      dockerfile: Dockerfile
+    container_name: todo-api
+    hostname: todo-api
+    ports:
+      - "8081:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_CONNECTION_STRING=Server=todo-mssql;Database=todo;User Id=sa;TrustServerCertificate=True;
+      - DB_PASSWORD=todo@123
+    networks:
+      - todo-network
+    restart: unless-stopped
+    depends_on:
+      mssql:
+        condition: service_healthy  # Todo API waits until SQL Server is completely ready
+
+volumes:
+  mssql_data:
+networks:
+  todo-network:

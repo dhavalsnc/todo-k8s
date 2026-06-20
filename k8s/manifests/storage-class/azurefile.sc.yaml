@@ -1,0 +1,19 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: azurefile-storage-class
+provisioner: file.csi.azure.com # Uses the standard Azure File CSI driver
+reclaimPolicy: Retain           # Ensures your manual storage isn't deleted if the PVC is wiped
+volumeBindingMode: Immediate
+parameters:
+  resourceGroup: NAGP
+mountOptions:
+  - dir_mode=0770
+  - file_mode=0770
+  - uid=10001
+  - gid=0
+  - mfsymlinks
+  - nosharesock
+  - cache=strict
+  - actimeo=30
+  - noperm

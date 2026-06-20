@@ -1,0 +1,14 @@
+# create a service for the todo-api deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-api-svc
+  namespace: todo
+spec:
+  selector:
+    app: todo-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
